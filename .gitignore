@@ -1,0 +1,7 @@
+.gradle
+.idea
+out
+target
+*.txt
+*.JPG
+*.iml
