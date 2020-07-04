@@ -1,0 +1,7 @@
+syntax = "proto3";
+option java_outer_classname = "StudentPOJO"; //生成的外部类名称，同时也是文件名
+//内部类，真正发送的对象
+message Student{
+  int32 id = 1;
+  string name = 2;
+}
