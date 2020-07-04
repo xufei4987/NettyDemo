@@ -1,4 +1,4 @@
-package com.youxu.netty.proto3;
+package com.youxu.netty.proto3.example2;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -40,7 +40,7 @@ public class NettyServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             //这里可以拿到所有建立连接的channel,放入集合中可以做推送业务
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new ProtobufDecoder(StudentPOJO.Student.getDefaultInstance()))
+                            pipeline.addLast(new ProtobufDecoder(MyDataInfo.MyMessage.getDefaultInstance()))
                                     .addLast(new NettyServerHandler());
                         }
                     });

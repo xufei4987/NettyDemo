@@ -1,4 +1,4 @@
-package com.youxu.netty.proto3;
+package com.youxu.netty.proto3.example2;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
