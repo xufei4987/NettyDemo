@@ -16,6 +16,7 @@ public class SimpleTcpServerHandler extends ChannelInboundHandlerAdapter {
 //        ByteBuf byteBuf = (ByteBuf) msg;
 //        System.out.println("收到客户端的信息：" + byteBuf.toString(CharsetUtil.UTF_8));
         //可以将耗时操作提交给当前的eventLoop排队执行，实际上是将任务放到taskQueue中
+        System.out.println(ctx.pipeline().hashCode());
         ctx.channel().eventLoop().execute(()->{
             try {
                 Thread.sleep(5000);
