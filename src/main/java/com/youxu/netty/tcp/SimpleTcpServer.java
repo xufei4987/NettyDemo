@@ -8,8 +8,12 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 
 public class SimpleTcpServer {
+    private static EventExecutorGroup group = new DefaultEventExecutorGroup(8);
+
     public static void main(String[] args) throws InterruptedException {
 
         //bossGroup处理connect请求，workerGroup处理read、write等业务处理
@@ -39,7 +43,8 @@ public class SimpleTcpServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             //这里可以拿到所有建立连接的channel,放入集合中可以做推送业务
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new SimpleTcpServerHandler());
+                            System.out.println("current线程：" + Thread.currentThread().getName());
+                            pipeline.addLast(group,new SimpleTcpServerHandler());
                         }
                     });
             System.out.println("------server is ready!------");
@@ -47,12 +52,12 @@ public class SimpleTcpServer {
             ChannelFuture channelFuture = serverBootstrap.bind(6666).sync();
             //由于netty的所有操作都是异步的（提交给channel所绑定的NioEventLoop执行），所以这里添加listener其实是添加一个任务给NioEventLoop的taskQueue，
             //在上一个任务结束后自然就调用下一个任务，即addListener中的任务，实现监听机制
-            channelFuture.addListener( future -> {
-               if (future.isSuccess()){
-                   System.out.println("绑定6666端口成功");
-               }else {
-                   System.out.println("绑定6666端口失败");
-               }
+            channelFuture.addListener(future -> {
+                if (future.isSuccess()) {
+                    System.out.println("绑定6666端口成功");
+                } else {
+                    System.out.println("绑定6666端口失败");
+                }
             });
 
             //对关闭通道进行监听
